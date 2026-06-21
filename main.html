@@ -1,14 +1,31 @@
-<div id="main-container">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Ndle-K</title>
+</head>
 
+<div id="setting">
+	<div>
+		<label for="number">词语个数</label>
+		<input type="range" min="1" max="16" value="1" id="number">
+	</div>
+	<div>
+		<label for="length">词语长度</label>
+		<input type="range" min="2" max="20" value="5" id="length">
+	</div>
+	<div>
+		<button id="startButton">Start</button>
+	</div>
+</div>
+<div id="main-container">
+	
 </div>
 <div id="keyboard">
 
 </div>
 
 <link rel="stylesheet" href="component.css">
+<link rel="stylesheet" href="main.css">
 <script src="keyboard.js"></script>
 <script src="wordle.js"></script>
-
-<script>
-let Keyboard=new WordleKeyboard('keyboard');
-</script>
+<script src="app.js"></script>

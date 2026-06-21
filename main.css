@@ -1,0 +1,12 @@
+div#setting{
+
+}
+div#setting label{
+	width: 5em;
+	text-align: right;
+}
+div#setting input[type=range]{
+	width: 20em;
+	vertical-align: middle;
+	margin-right: 0.5em;
+}
