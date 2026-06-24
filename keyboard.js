@@ -137,7 +137,7 @@ class WordleKeyboard{
 	 * @param{HTMLElement} keyElement - 按键元素
 	 */
 	animateKey(keyElement){
-		keyElement.style.scale = '0.95';
+		keyElement.style.scale = '0.9';
 		setTimeout(() =>{
 			keyElement.style.scale = '';
 		}, 100);
@@ -221,19 +221,6 @@ class WordleKeyboard{
 	 * @param{string} status - 状态
 	 */
 	applyKeyStyle(keyElement,status){
-		const colors={
-			'correct': this.keyColor.correct,
-			'present': this.keyColor.present,
-			'absent': this.keyColor.absent
-		};
-
-		if(status&&colors[status]){
-			keyElement.style.backgroundColor=colors[status];
-			// 添加过渡动画
-			keyElement.style.transition='background-color 0.3s ease';
-		} else{
-			keyElement.style.backgroundColor=this.keyColor.default;
-		}
 
 		// 添加状态类（用于CSS自定义）
 		keyElement.className='key';

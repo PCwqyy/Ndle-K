@@ -29,7 +29,28 @@
 			.map(line => line.trim())
 			.filter(line => line !== '' && !line.startsWith('#')); // 支持注释行
 	}
-	let wordles=[];
+	let wordles=[];// Wordle display instances
+	let elements=[];// Wordle elements
+	/**
+	 * @param {Array<Element>} eles
+	 * @param {Element} parent
+	 */
+	function arrangeElements(eles,parent)
+	{
+		const num=eles.length;
+		const col=Math.ceil(Math.sqrt(num));
+		const row=Math.ceil(num/col);
+		parent.classList.add('arrenger');
+		for(var i=0,k=0;i<row;i++)
+		{
+			var rowEle=document.createElement('div');
+			rowEle.classList.add('arrange-row');
+			for(var j=0;j<col&&k<num;j++,k++)
+				rowEle.appendChild(eles[k]);
+			parent.appendChild(rowEle);
+		}
+	}
+
 	const randomChoice =arr=>arr[Math.floor(Math.random()*arr.length)];
 	const MainContianer=document.querySelector('#main-container');
 	function initGame(){
@@ -40,9 +61,8 @@
 			var word=randomChoice(dict);
 			console.warn(word);
 			var wordle=new Wordle(word,dict,K,N+5);
-			var ele=document.createElement('div');
-			MainContianer.appendChild(ele);
-			var display=new WordleDisplay(ele,wordle,{
+			elements[i]=document.createElement('div');
+			var display=new WordleDisplay(elements[i],wordle,{
 				tileSize: '52px',
 				tileGap: '4px',
 				maxAttempts: N+5,
@@ -51,6 +71,7 @@
 			wordles.push(display);
 		}
 		console.log(wordles);
+		arrangeElements(elements,MainContianer);
 	}
 
 	let inputWord='';
@@ -67,7 +88,10 @@
 		}
 		else if(key=='enter'){
 			wordles.forEach((val)=>{
-				val.submitWord(inputWord);
+				var result=val.submitWord(inputWord).result;
+				console.log(result);
+				for(var k in result)
+					Keyboard.updateKeyStatus(inputWord[k],result[k]);
 			})
 			confirmWord();
 		}

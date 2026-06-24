@@ -270,6 +270,7 @@ class WordleDisplay {
         if (!this.container) {
             throw new Error(`容器元素不存在`);
         }
+		this.container.classList.add('wordle');
 
         // 存储Wordle实例
         this.wordle = wordleInstance;
@@ -383,15 +384,6 @@ class WordleDisplay {
                 
                 // 设置状态class
                 tile.classList.add(`tile-${status}`); // 状态class: tile-correct, tile-present, tile-absent
-                
-                // 触发翻转动画
-                if (status) {
-                    tile.classList.add('tile-flip'); // 翻转动画class
-                    // 延迟移除动画class，避免影响后续
-                    setTimeout(() => {
-                        tile.classList.remove('tile-flip');
-                    }, this.options.animationDuration + 100);
-                }
             }
         }
 
