@@ -314,6 +314,8 @@ class WordleDisplay {
         this.messageElement.className = 'wordle-message'; // 消息区域class
         this.container.appendChild(this.messageElement);
 
+		this.cursor=0;
+
         // 创建格子
         this.createTiles();
 
@@ -344,6 +346,9 @@ class WordleDisplay {
                 tile.dataset.col = col;
                 rowElement.appendChild(tile);
                 rowTiles.push(tile);
+				tile.addEventListener('click',(()=>{
+					window.setCursor(col); // Define yourself!!
+				}).bind(this));
             }
 
             this.tileElements.push(rowTiles);
@@ -358,62 +363,60 @@ class WordleDisplay {
         this.renderMessage();
     }
 
+	// 上一行的结果
+	revealResult(row){
+		const attempt = this.wordle.attempts[row];
+		const word = attempt.word;
+		const result = attempt.result;
+
+		for (let col = 0; col < word.length; col++) {
+			const tile = this.tileElements[row][col];
+			// 设置字母
+			tile.textContent = word[col].toUpperCase();
+			// 设置状态class
+			tile.classList.add(`tile-${result[col]}`); // 状态class: tile-correct, tile-present, tile-absent
+		}
+	}
+
+	renderInput(row){
+		const inputLength = this.currentInput.length;
+		for (let col = 0; col < this.options.wordLength; col++) {
+			const tile = this.tileElements[row][col];
+			if (col < inputLength) {
+				// 已输入的字母
+				tile.textContent = this.currentInput[col].toUpperCase();
+				tile.classList.add('tile-filled'); // 已填充class
+			} else {
+				// 空位
+				tile.textContent = '';
+				tile.classList.remove('tile-filled');
+			}
+		}
+	}
+
+	renderCursor(row){
+		for (let col = 0; col < this.options.wordLength; col++) {
+			const tile = this.tileElements[row][col];
+			if(col===this.cursor)
+				tile.classList.add('tile-active');
+			else
+				tile.classList.remove('tile-active');
+		}
+	}
+
     /**
      * 渲染网格
      */
     renderGrid() {
-        const { attempts } = this.wordle;
-        const currentAttempt = this.wordle.currentAttempt;
-
-        // 清空所有格子的状态
-        this.clearTiles();
+		const currentAttempt = this.wordle.currentAttempt;
 
         // 渲染已提交的猜测
-        for (let row = 0; row < attempts.length; row++) {
-            const attempt = attempts[row];
-            const word = attempt.word;
-            const result = attempt.result;
-
-            for (let col = 0; col < word.length; col++) {
-                const tile = this.tileElements[row][col];
-                const letter = word[col];
-                const status = result[col];
-
-                // 设置字母
-                tile.textContent = letter.toUpperCase();
-                
-                // 设置状态class
-                tile.classList.add(`tile-${status}`); // 状态class: tile-correct, tile-present, tile-absent
-            }
-        }
+		if(currentAttempt>0)	this.revealResult(currentAttempt-1);
 
         // 渲染当前正在输入的行
-        if (!this.wordle.gameOver && currentAttempt < this.options.maxAttempts) {
-            const currentRow = currentAttempt;
-            const inputLength = this.currentInput.length;
-
-            for (let col = 0; col < this.options.wordLength; col++) {
-                const tile = this.tileElements[currentRow][col];
-                
-                if (col < inputLength) {
-                    // 已输入的字母
-                    tile.textContent = this.currentInput[col].toUpperCase();
-                    tile.classList.add('tile-filled'); // 已填充class
-                } else {
-                    // 空位
-                    tile.textContent = '';
-                    tile.classList.remove('tile-filled');
-                }
-            }
-
-            // 高亮当前输入位置（最后一个输入字母的下一格）
-            if (inputLength < this.options.wordLength) {
-                const nextTile = this.tileElements[currentRow][inputLength];
-                if (nextTile) {
-                    nextTile.classList.add('tile-active'); // 当前活动位置class
-                }
-            }
-        }
+        if (!this.wordle.gameOver && currentAttempt < this.options.maxAttempts)
+            this.renderInput(currentAttempt),
+			this.renderCursor(currentAttempt);
 
         // 如果游戏结束，显示答案（如果需要）
         if (this.wordle.gameOver) {
@@ -493,9 +496,10 @@ class WordleDisplay {
                 this.showMessage(`还剩 ${result.attemptsLeft} 次尝试`, 'info');
             }
 
+			this.setCursor(0);
+
             // 渲染网格
             this.render();
-
             return result;
 
         } catch (error) {
@@ -503,6 +507,16 @@ class WordleDisplay {
             throw error;
         }
     }
+
+	setCursor(position){
+		if(position<0||position>this.currentInput.length) return;
+		this.cursor=position;
+	}
+	setCursorOffset(offset){
+		const newPos=this.cursor+offset;
+		if(newPos<0||newPos>this.currentInput.length) return;
+		this.cursor=newPos;
+	}
 
     /**
      * 输入字母
@@ -532,8 +546,8 @@ class WordleDisplay {
         }
 
         // 添加字母
-        this.currentInput += letter.toLowerCase();
-        
+        this.currentInput=this.currentInput.slice(0, this.cursor) + letter.toLowerCase() + this.currentInput.slice(this.cursor);
+        this.setCursorOffset(1);
         // 渲染更新
         this.render();
     }
@@ -542,10 +556,12 @@ class WordleDisplay {
      * 删除最后一个字母
      */
     deleteLetter() {
-        if (this.currentInput.length > 0) {
-            this.currentInput = this.currentInput.slice(0, -1);
-            this.render();
-        }
+        // 删除光标前的字母
+		if (this.cursor > 0) {
+			this.currentInput = this.currentInput.slice(0, this.cursor - 1) + this.currentInput.slice(this.cursor);
+			this.setCursorOffset(-1);
+			this.render();
+		}
     }
 
     /**

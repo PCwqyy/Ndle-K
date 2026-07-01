@@ -51,6 +51,7 @@
 	font-weight: bold;
 	text-transform: uppercase;
 	transition: all 0.1s ease;
+	cursor: pointer;
 }
 
 /* ===== 格子状态样式 ===== */

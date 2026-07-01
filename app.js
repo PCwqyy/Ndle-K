@@ -74,33 +74,54 @@
 		arrangeElements(elements,MainContianer);
 	}
 
-	let inputWord='';
-	function confirmWord(){
-		console.log(inputWord);
-		inputWord='';
+	function getInputWord(){
+		var word='';
+		for(var i=0;i<wordles.length;i++)
+			if(wordles[i].currentInput.length==K)
+				word=wordles[i].currentInput;
+		return word;
 	}
 	function onKeyPress(key){
-		if(key=='backspace'){
-			inputWord=inputWord.substring(0,inputWord.length-1);
+		if(key=='backspace')
 			wordles.forEach((val)=>{
 				val.deleteLetter();
 			})
-		}
 		else if(key=='enter'){
+			let inputWord=getInputWord();
+			console.log(`Input word: ${inputWord}`);
 			wordles.forEach((val)=>{
-				var result=val.submitWord(inputWord).result;
+				try{
+					var result=val.submitWord(inputWord).result;
+				}catch(e){
+					console.error(e);
+					return;
+				}
 				console.log(result);
 				for(var k in result)
 					Keyboard.updateKeyStatus(inputWord[k],result[k]);
 			})
-			confirmWord();
 		}
-		else if(inputWord.length<K){
-			inputWord+=key;
+		else if(key=='left')
+			wordles.forEach((val)=>{
+				val.setCursorOffset(-1);
+				val.render();
+			})
+		else if(key=='right')
+			wordles.forEach((val)=>{
+				val.setCursorOffset(1);
+				val.render();
+			})
+		else
 			wordles.forEach((val)=>{
 				val.inputLetter(key);
 			})
-		}
+	}
+
+	window.setCursor=(pos)=>{
+		wordles.forEach((val)=>{
+			val.setCursor(pos);
+			val.render();
+		});
 	}
 
 	let Keyboard=new WordleKeyboard('keyboard');

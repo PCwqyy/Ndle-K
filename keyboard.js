@@ -16,18 +16,10 @@ class WordleKeyboard{
 
 		// 键盘布局
 		this.layout=options.layout||[
-			['q','w','e','r','t','y','u','i','o','p'],
-			['a','s','d','f','g','h','j','k','l'],
-			['enter','z','x','c','v','b','n','m','backspace']
+			['q','w','e','r','t','y','u','i','o','p','backspace'],
+			['a','s','d','f','g','h','j','k','l','enter'],
+			['z','x','c','v','b','n','m','left','right']
 		];
-
-		// 键盘配置
-		this.keyColor=options.keyColor ||{
-			default: '#818384',
-			absent: '#3a3a3c',
-			present: '#b59f3b',
-			correct: '#538d4e'
-		};
 
 		// 状态
 		this.letterStatus={}; //{ 'a': 'correct','b': 'present',... }
@@ -83,6 +75,10 @@ class WordleKeyboard{
 			button.dataset.physicalKey='Backspace';
 		else if(key==='enter')
 			button.dataset.physicalKey='Enter';
+		else if(key==='left')
+			button.dataset.physicalKey='ArrowLeft';
+		else if(key==='right')
+			button.dataset.physicalKey='ArrowRight';
 		else
 			button.dataset.physicalKey=key;
 
@@ -96,9 +92,11 @@ class WordleKeyboard{
 	getDisplayText(ele,key){
 		const specialKeys={
 			'enter': '\u21B5',
-			'backspace': '\u232B'
+			'backspace': '\u232B',
+			'left': '\u2190',
+			'right': '\u2192'
 		};
-		if(key in specialKeys)
+		if(key=='enter'||key=='backspace')
 			ele.classList.add('special');
 		ele.textContent=specialKeys[key]||key.toUpperCase();
 	}
@@ -189,6 +187,26 @@ class WordleKeyboard{
 				if(keyElement) this.animateKey(keyElement);
 				return;
 			}
+
+			if(e.key==='ArrowLeft'){
+				e.preventDefault();
+				if(this.onKeyDown){
+					this.onKeyDown('left');
+				}
+				const keyElement=this.keyElements['left'];
+				if(keyElement) this.animateKey(keyElement);
+				return;
+			}
+
+			if(e.key==='ArrowRight'){
+				e.preventDefault();
+				if(this.onKeyDown){
+					this.onKeyDown('right');
+				}
+				const keyElement=this.keyElements['right'];
+				if(keyElement) this.animateKey(keyElement);
+				return;
+			}
 		});
 	}
 
@@ -247,7 +265,6 @@ class WordleKeyboard{
 		for (const key of Object.keys(this.keyElements)){
 			const keyElement=this.keyElements[key];
 			if(keyElement){
-				keyElement.style.backgroundColor=this.keyColor.default;
 				keyElement.className='key';
 			}
 		}
@@ -303,21 +320,6 @@ class WordleKeyboard{
 			width: rect.width,
 			height: rect.height
 		};
-	}
-
-	/**
-	 * 切换键盘主题
-	 * @param{object} colors - 颜色配置
-	 */
-	setTheme(colors){
-		this.keyColor={ ...this.keyColor,...colors };
-		// 刷新所有按键的颜色
-		for (const [letter,status] of Object.entries(this.letterStatus)){
-			const keyElement=this.keyElements[letter];
-			if(keyElement){
-				this.applyKeyStyle(keyElement,status);
-			}
-		}
 	}
 }
 
