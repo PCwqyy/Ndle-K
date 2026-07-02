@@ -87,6 +87,7 @@ class WordleKeyboard{
 
 	/**
 	 * 获取按键显示文本
+	 * @param {Element} ele - 按键元素
 	 * @param{string} key - 按键标识
 	 */
 	getDisplayText(ele,key){
@@ -97,7 +98,7 @@ class WordleKeyboard{
 			'right': '\u2192'
 		};
 		if(key=='enter'||key=='backspace')
-			ele.classList.add('special');
+			ele.setAttribute('special','');
 		ele.textContent=specialKeys[key]||key.toUpperCase();
 	}
 
@@ -264,9 +265,8 @@ class WordleKeyboard{
 		this.letterStatus={};
 		for (const key of Object.keys(this.keyElements)){
 			const keyElement=this.keyElements[key];
-			if(keyElement){
+			if(keyElement)
 				keyElement.className='key';
-			}
 		}
 	}
 

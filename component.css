@@ -195,7 +195,7 @@ button.key{
 	font-family: Saira;
 	transition: all 0.1s ease;
 }
-button.key.special{
+button.key[special]{
 	width: calc(1.5 * var(--key-size));
 }
 button.key:hover{

@@ -54,6 +54,10 @@
 	const randomChoice =arr=>arr[Math.floor(Math.random()*arr.length)];
 	const MainContianer=document.querySelector('#main-container');
 	function initGame(){
+		MainContianer.innerHTML='';
+		wordles=[];
+		elements=[];
+		Keyboard.reset();
 		console.log(`N=${N}, K=${K}`);
 		let dict=dictionary.filter(w=>w.length===K);
 		console.log(dict);
