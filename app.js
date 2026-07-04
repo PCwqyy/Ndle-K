@@ -1,6 +1,7 @@
 (async function(){
 	let N=1,K=5;	// N for number, K for length.
 	const dictUrl=window.DictUrl;
+	const ansUrl=window.AnsUrl;
 	function initSetting(){
 		document.querySelectorAll('div#setting input[type=range]').forEach((val)=>{
 			var ele=document.createElement('span');
@@ -14,6 +15,7 @@
 		document.querySelector('#length').addEventListener('input',(val)=>{K=parseInt(val.target.value);})
 	}
 	let dictionary=[];
+	let answers=[];
 	/**
 	 * 加载词典并返回Promise（更简洁的用法）
 	 * @param {string} url - 词典文件路径
@@ -60,9 +62,10 @@
 		Keyboard.reset();
 		console.log(`N=${N}, K=${K}`);
 		let dict=dictionary.filter(w=>w.length===K);
+		let ans=answers.filter(w=>w.length===K);
 		console.log(dict);
 		for(var i=0;i<N;i++){
-			var word=randomChoice(dict);
+			var word=randomChoice(ans);
 			console.warn(word);
 			var wordle=new Wordle(word,dict,K,N+5);
 			elements[i]=document.createElement('div');
@@ -134,7 +137,8 @@
 
 	initSetting();
 	dictionary=await loadDictionarySimple(dictUrl);
-	console.log(dictionary);
+	answers=await loadDictionarySimple(ansUrl);
+	console.log(`Loaded dictionary(${dictionary.length} words) and answers(${answers.length} words).`);
 	document.querySelector('#startButton').addEventListener('click',()=>{
 		initGame(N);
 	})
