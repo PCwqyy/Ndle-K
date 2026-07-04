@@ -1,6 +1,6 @@
 (async function(){
 	let N=1,K=5;	// N for number, K for length.
-	const dictUrl='dictionary.txt';
+	const dictUrl=window.DictUrl;
 	function initSetting(){
 		document.querySelectorAll('div#setting input[type=range]').forEach((val)=>{
 			var ele=document.createElement('span');
