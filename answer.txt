@@ -215,8 +215,6 @@ ailment
 aim
 air
 airborne
-air-conditioning
-air-conditioner
 aircraft
 airline
 airplane
@@ -754,8 +752,6 @@ beside
 besides
 besiege
 best
-best-seller
-best-selling
 bet
 betray
 betrayal
@@ -889,7 +885,6 @@ brain
 brake
 branch
 brand
-brand-new
 brandy
 brass
 brave
@@ -1109,7 +1104,6 @@ celebration
 celebrity
 cell
 cellar
-cell-phone
 celsius
 celcius
 cement
@@ -1265,7 +1259,6 @@ cleanse
 clear
 clearly
 clearance
-clear-cut
 clearing
 clench
 clergy
@@ -1344,7 +1337,6 @@ college
 collide
 collision
 colon
-semi-colon
 colonel
 colony
 color
@@ -2395,7 +2387,6 @@ east
 eastern
 easter
 easy
-easy-going
 eat
 easily
 eccentric
@@ -3498,7 +3489,6 @@ hierarchical
 high
 highly
 highlight
-high-tech
 highway
 hijack
 hike
@@ -3636,7 +3626,6 @@ i
 ice
 icy
 iceberg
-ice-cream
 icon
 idea
 ideal
@@ -4293,7 +4282,6 @@ livelihood
 lively
 liver
 livestock
-living-room
 load
 loaf
 loan
@@ -4579,7 +4567,6 @@ microwave
 microwavable
 midday
 middle
-middle-class
 midnight
 midst
 midwife
@@ -5007,7 +4994,6 @@ oil
 oily
 okay
 old
-old-fashioned
 olive
 olympic
 omit
@@ -6380,7 +6366,6 @@ seasonal
 seat
 second
 secondary
-second-hand
 secret
 secrecy
 secretive
@@ -6674,7 +6659,6 @@ soar
 sob
 sober
 sobre
-so-called
 soccer
 society
 social
@@ -7623,7 +7607,6 @@ upright
 uprising
 upset
 upstairs
-up-to-date
 upward
 uranium
 upwards
@@ -7859,9 +7842,6 @@ weight
 welcome
 welfare
 well
-well-being
-well-known
-well-off
 west
 western
 westerner
@@ -7989,7 +7969,6 @@ write
 writer
 writing
 wrong
-x-ray
 yacht
 yard
 yawn
